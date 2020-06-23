@@ -9,6 +9,4 @@ package com.jarchie.performance.constants;
 public class Constant {
     public static final String DO_MAIN = "https://wanandroid.com/";
 
-    //获取文章列表
-    public static final String GET_ARTICAL_LIST = DO_MAIN + "wxarticle/list/408/1/json";
 }

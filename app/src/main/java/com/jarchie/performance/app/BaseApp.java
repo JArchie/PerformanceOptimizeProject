@@ -8,6 +8,10 @@ import android.telephony.TelephonyManager;
 
 import androidx.core.os.TraceCompat;
 
+import com.jarchie.performance.launchstarter.TaskDispatcher;
+import com.jarchie.performance.tasks.GetDeviceIdTask;
+import com.jarchie.performance.tasks.InitBuglyTask;
+import com.jarchie.performance.tasks.InitJPushTask;
 import com.jarchie.performance.utils.LaunchTime;
 
 import cn.jpush.android.api.JPushInterface;
@@ -23,6 +27,14 @@ public class BaseApp extends Application {
     private static Application mApplication;
     private String mDeviceId;
 
+    public void setDeviceId(String deviceId) {
+        this.mDeviceId = deviceId;
+    }
+
+    public String getDeviceId() {
+        return mDeviceId;
+    }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -34,15 +46,25 @@ public class BaseApp extends Application {
     public void onCreate() {
         super.onCreate();
 //        Debug.startMethodTracing("PerOpt");
-        TraceCompat.beginSection("AppOnCreate");
+//        TraceCompat.beginSection("AppOnCreate");
         mApplication = this;
-        TelephonyManager tManager = (TelephonyManager) BaseApp.this.getSystemService(Context.TELEPHONY_SERVICE);
-        mDeviceId = tManager.getDeviceId();
+
+        //启动器
+//        TaskDispatcher.init(this);
+//        TaskDispatcher dispatcher = TaskDispatcher.createInstance();
+//        dispatcher.addTask(new InitBuglyTask())
+//                .addTask(new InitJPushTask())
+//                .addTask(new GetDeviceIdTask())
+//                .start();
+//        dispatcher.await();
+
+//        TelephonyManager tManager = (TelephonyManager) BaseApp.this.getSystemService(Context.TELEPHONY_SERVICE);
+//        mDeviceId = tManager.getDeviceId();
         //推送
         JPushInterface.init(this);
         JPushInterface.setAlias(this,0,mDeviceId);
 //        Debug.stopMethodTracing();
-        TraceCompat.endSection();
+//        TraceCompat.endSection();
     }
 
     public static Application getApplication(){

@@ -29,6 +29,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
     private Context mContext;
     private List<FeedBean.DataBean.DatasBean> mList;
     private boolean mHasRecorded;
+    private OnFeedShowCallBack mCallBack;
 
     public FeedAdapter(Context context, List<FeedBean.DataBean.DatasBean> list) {
         this.mContext = context;
@@ -38,6 +39,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
     public void setList(List<FeedBean.DataBean.DatasBean> items) {
         this.mList = items;
         notifyDataSetChanged();
+    }
+
+    public void setOnFeedShowCallBack(OnFeedShowCallBack callBack){
+        this.mCallBack = callBack;
     }
 
     @NonNull
@@ -55,6 +60,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
                 public boolean onPreDraw() {
                     holder.mAllLayout.getViewTreeObserver().removeOnPreDrawListener(this);
                     LaunchTime.endRecord("FirstShow");
+                    if (mCallBack!=null){
+                        mCallBack.onFeedShow();
+                    }
                     return true;
                 }
             });
