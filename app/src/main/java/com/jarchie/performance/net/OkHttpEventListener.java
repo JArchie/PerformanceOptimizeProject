@@ -37,7 +37,7 @@ public class OkHttpEventListener extends EventListener {
     @Override
     public void callStart(Call call) {
         super.callStart(call);
-        Log.i("lz","callStart");
+        Log.i("Jarchie","callStart");
     }
 
     @Override
@@ -125,6 +125,7 @@ public class OkHttpEventListener extends EventListener {
     @Override
     public void responseBodyEnd(Call call, long byteCount) {
         super.responseBodyEnd(call, byteCount);
+        //网络请求返回值的大小，此处统计网络请求的流量消耗，所以此处可做流量预警
         okHttpEvent.responseBodySize = byteCount;
     }
 
@@ -136,10 +137,10 @@ public class OkHttpEventListener extends EventListener {
 
     @Override
     public void callFailed(Call call, IOException ioe) {
-        Log.i("lz","callFailed ");
+        Log.i("Jarchie","callFailed");
         super.callFailed(call, ioe);
         okHttpEvent.apiSuccess = false;
         okHttpEvent.errorReason = Log.getStackTraceString(ioe);
-        Log.i("lz","reason "+okHttpEvent.errorReason);
+        Log.i("Jarchie","reason "+okHttpEvent.errorReason);
     }
 }

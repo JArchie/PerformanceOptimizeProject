@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager;
 
 import androidx.core.os.TraceCompat;
 
+import com.facebook.stetho.Stetho;
 import com.jarchie.performance.launchstarter.TaskDispatcher;
 import com.jarchie.performance.tasks.GetDeviceIdTask;
 import com.jarchie.performance.tasks.InitBuglyTask;
@@ -65,6 +66,7 @@ public class BaseApp extends Application {
         JPushInterface.setAlias(this,0,mDeviceId);
 //        Debug.stopMethodTracing();
 //        TraceCompat.endSection();
+//        Stetho.initializeWithDefaults(this);
     }
 
     public static Application getApplication(){

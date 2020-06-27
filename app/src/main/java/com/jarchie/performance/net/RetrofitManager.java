@@ -1,6 +1,7 @@
 package com.jarchie.performance.net;
 
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.jarchie.performance.app.BaseApp;
 import com.jarchie.performance.constants.Constant;
 
@@ -23,10 +24,12 @@ public class RetrofitManager {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //文件路径和最大值
         Cache cache = new Cache(BaseApp.getApplication().getCacheDir(),10*1024*1024);
-        client.
+        client.cache(cache).
                 eventListenerFactory(OkHttpEventListener.FACTORY).
                 dns(OkHttpDNS.getIns(BaseApp.getApplication())).
+                addNetworkInterceptor(new StethoInterceptor()).
                 addInterceptor(new NoNetInterceptor()).
                 addInterceptor(logging);
 

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -30,11 +31,13 @@ import android.widget.Toast;
 
 import com.jarchie.performance.adapter.FeedAdapter;
 import com.jarchie.performance.adapter.OnFeedShowCallBack;
+import com.jarchie.performance.adapter.OnItemClickListener;
 import com.jarchie.performance.bean.FeedBean;
 import com.jarchie.performance.constants.Constant;
 import com.jarchie.performance.net.RetrofitManager;
 import com.jarchie.performance.utils.GsonUtils;
 import com.jarchie.performance.utils.LaunchTime;
+import com.jarchie.performance.utils.LogUtils;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhangyue.we.x2c.X2C;
@@ -49,6 +52,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import top.zibin.luban.Luban;
+
 /**
  * 作者: 乔布奇
  * 日期: 2020-05-17 10:00
@@ -138,6 +143,15 @@ public class MainActivity extends AppCompatActivity implements OnFeedShowCallBac
 //        X2C.setContentView(this,R.layout.activity_main);
         mAdapter = new FeedAdapter(this, mList);
         initData();
+        mAdapter.setOnItem1ClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Luban.with(MainActivity.this)
+                        .load(Environment.getExternalStorageDirectory().getPath()+"/Android/luban/yingbao.png")
+                        .setTargetDir(Environment.getExternalStorageDirectory().getPath()+"/Android/luban")
+                        .launch();
+            }
+        });
 //        getFPS();
 //        synchronized (MainActivity.this){
 //            Toast.makeText(this,"锁冲突问题",Toast.LENGTH_SHORT).show();
@@ -194,12 +208,14 @@ public class MainActivity extends AppCompatActivity implements OnFeedShowCallBac
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         try {
-                            String json = response.body().string();
-                            FeedBean bean = GsonUtils.fromJson(json,FeedBean.class);
-                            if (bean.getData()!=null){
-                                if (bean.getData().getDatas()!=null && bean.getData().getDatas().size()>0){
-                                    mList = bean.getData().getDatas();
-                                    mAdapter.setList(mList);
+                            if (response.body()!=null){
+                                String json = response.body().string();
+                                FeedBean bean = GsonUtils.fromJson(json,FeedBean.class);
+                                if (bean.getData()!=null){
+                                    if (bean.getData().getDatas()!=null && bean.getData().getDatas().size()>0){
+                                        mList = bean.getData().getDatas();
+                                        mAdapter.setList(mList);
+                                    }
                                 }
                             }
                         } catch (IOException e) {

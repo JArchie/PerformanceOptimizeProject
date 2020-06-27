@@ -75,4 +75,6 @@ dependencies {
     implementation ('com.aliyun.ams:alicloud-android-httpdns:1.1.7@aar') {
         transitive true
     }
+    //luban
+    implementation 'top.zibin:Luban:1.1.8'
 }

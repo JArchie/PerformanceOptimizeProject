@@ -36,6 +36,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
         this.mList = list;
     }
 
+    //点击事件的回调
+    private OnItemClickListener onItemClickListener;
+
+    //设置回调监听
+    public void setOnItem1ClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     public void setList(List<FeedBean.DataBean.DatasBean> items) {
         this.mList = items;
         notifyDataSetChanged();
@@ -73,7 +81,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
         holder.mSource.setText(TextUtils.isEmpty(
                 bean.getSuperChapterName()) ? "暂无" : bean.getSuperChapterName()); //来源
         holder.mLink.setText(TextUtils.isEmpty(bean.getLink()) ? "地址：暂无" : "地址：" + bean.getLink());
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() { //删除
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    int pos = holder.getLayoutPosition();
+                    onItemClickListener.onItemClick(holder.itemView, pos);
+                }
+            }
+        });
     }
 
     @Override

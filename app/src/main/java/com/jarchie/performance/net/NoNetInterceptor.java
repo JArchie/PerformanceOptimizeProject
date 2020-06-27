@@ -18,6 +18,7 @@ public class NoNetInterceptor implements Interceptor {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
         if(!Utils.isNetworkConnected(BaseApp.getApplication())){
+            //没有网络时强制开启缓存
             builder.cacheControl(CacheControl.FORCE_CACHE);
         }
         return chain.proceed(builder.build());
